@@ -4648,14 +4648,15 @@ function _renderSkillUsage(d) {
     .map(([name, meta]) => [name, Number(meta && meta.use_count) || 0, Number(meta && meta.view_count) || 0, Number(meta && meta.patch_count) || 0])
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10);
+  const bridgeNote = `<div class="wiki-status-footer" style="margin-top:4px;opacity:0.85">${esc(t('insights_skill_usage_bridge_note'))}</div>`;
   if (!entries.length) {
-    return `<div class="insights-card" id="skillUsageCard"><div class="insights-card-title">${esc(t('insights_skill_usage_title'))}</div><div class="insights-empty">${esc(t('insights_skill_usage_no_data'))}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${esc(t('insights_skill_usage_no_data_hint'))}</div></div>`;
+    return `<div class="insights-card" id="skillUsageCard"><div class="insights-card-title">${esc(t('insights_skill_usage_title'))}</div><div class="insights-empty">${esc(t('insights_skill_usage_no_data'))}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${esc(t('insights_skill_usage_no_data_hint'))}</div>${bridgeNote}</div>`;
   }
   const rows = entries.map(([name, useCount, viewCount, patchCount]) => {
     const share = totalInvocations > 0 ? (useCount / totalInvocations * 100).toFixed(1) : '0.0';
     return `<div class="insights-table-row"><span class="insights-model-name" title="${esc(name)}">${esc(name)}</span><span>${useCount}</span><span>${viewCount}</span><span>${patchCount}</span><span>${share}%</span></div>`;
   }).join('');
-  return `<div class="insights-card" id="skillUsageCard"><div class="insights-card-title">${esc(t('insights_skill_usage_title'))}</div><div class="skill-usage-grid" style="margin-bottom:8px"><div><span>${esc(t('insights_skill_usage_total'))}</span><strong>${totalInvocations.toLocaleString()}</strong></div><div><span>${esc(t('insights_skill_usage_skills_used'))}</span><strong>${uniqueUsed}/${skillNames.length}</strong></div></div><div class="insights-table skill-usage-table"><div class="insights-table-head"><span>${esc(t('insights_skill_usage_col_skill'))}</span><span>${esc(t('insights_skill_usage_col_uses'))}</span><span>${esc(t('insights_skill_usage_col_views'))}</span><span>${esc(t('insights_skill_usage_col_patches'))}</span><span>${esc(t('insights_skill_usage_col_share'))}</span></div>${rows}</div><div class="wiki-status-footer" style="margin-top:8px">${esc(t('insights_skill_usage_footer'))}</div></div>`;
+  return `<div class="insights-card" id="skillUsageCard"><div class="insights-card-title">${esc(t('insights_skill_usage_title'))}</div><div class="skill-usage-grid" style="margin-bottom:8px"><div><span>${esc(t('insights_skill_usage_total'))}</span><strong>${totalInvocations.toLocaleString()}</strong></div><div><span>${esc(t('insights_skill_usage_skills_used'))}</span><strong>${uniqueUsed}/${skillNames.length}</strong></div></div><div class="insights-table skill-usage-table"><div class="insights-table-head"><span>${esc(t('insights_skill_usage_col_skill'))}</span><span>${esc(t('insights_skill_usage_col_uses'))}</span><span>${esc(t('insights_skill_usage_col_views'))}</span><span>${esc(t('insights_skill_usage_col_patches'))}</span><span>${esc(t('insights_skill_usage_col_share'))}</span></div>${rows}</div><div class="wiki-status-footer" style="margin-top:8px">${esc(t('insights_skill_usage_footer'))}</div>${bridgeNote}</div>`;
 }
 
 function _renderInsights(d, box, wikiStatus, skillUsage) {
